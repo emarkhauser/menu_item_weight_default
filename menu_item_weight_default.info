@@ -1,0 +1,4 @@
+name = Menu Item Weight Default
+description = Configure a weight default for saving a menu item on a node
+core = 7.x
+dependencies[] = menu

@@ -1,0 +1,42 @@
+<?php
+/**
+ * @file
+ * This module adds the ability do disable a nodes menu item from the node add/edit page
+ */
+
+/**
+ * Implements hook_help().
+ */
+function menu_item_weight_default_help($path, $arg) {
+  if ($path == 'admin/structure/menu/default-weight') {
+    return '<p>' . t('Use this configuration form to set default weights for node menu items from the node add/edit form') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function menu_item_weight_default_menu() {
+  $items['admin/structure/menu/default-weight'] = array(
+    'title' => 'Menu Item Weight Default',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('menu_item_weight_default_settings'),
+    'file' => 'menu_item_weight_default.admin.inc',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 6,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function menu_item_weight_default_form_node_form_alter(&$form, &$form_state, $form_id) {
+  $node = $form_state['node'];
+  if (!isset($node->nid) || isset($node->is_new)) {
+    // this is a new node
+    $form['menu']['link']['weight']['#default_value'] = variable_get('menu_item_weight_default', 0);
+  }
+}
+
