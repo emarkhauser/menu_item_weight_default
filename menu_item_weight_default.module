@@ -34,8 +34,9 @@ function menu_item_weight_default_menu() {
  */
 function menu_item_weight_default_form_node_form_alter(&$form, &$form_state, $form_id) {
   $node = $form_state['node'];
-  if (!isset($node->nid) || isset($node->is_new)) {
-    // this is a new node
+  $menu = $node->menu;
+  if ($menu['mlid'] == 0) {
+    // this is a new menu item
     $form['menu']['link']['weight']['#default_value'] = variable_get('menu_item_weight_default', 0);
   }
 }
